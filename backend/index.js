@@ -1,5 +1,5 @@
 import express from "express";
-import { PORT,mongoDBURL } from './config.js';
+import { PORT,MongoDB_URI } from './config.js';
 import mongoose from 'mongoose';
 
 const app = express();
@@ -8,7 +8,7 @@ app.listen(PORT, () => {
 });
 // The import statement is used to import the PORT constant from the config.js file. The PORT constant is then used in the app.listen() method to specify the port on which the server should listen. This allows the port number to be easily changed by updating the value in the config.js file.
 
-mongoose.connect(mongoDBURL)
+mongoose.connect(MongoDB_URI)
 .then(() => {
   console.log('Connected to MongoDB');
   app.get("/", (request, response) => {
