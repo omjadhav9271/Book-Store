@@ -1,23 +1,50 @@
 import express from "express";
-import { PORT,MongoDB_URI } from './config.js';
+import { PORT, MongoDB_URI } from './config.js';
 import mongoose from 'mongoose';
+import { Book } from './models/bookModel.js';
 
 const app = express();
+
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Connect to MongoDB
+mongoose.connect(MongoDB_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+
+    // Root route
+    app.get("/", (request, response) => {
+      console.log(request);
+      return response.status(200).send("Server Responding: Hello World!");
+    });
+  })
+  .catch((error) => {
+    console.log('Error connecting to MongoDB:', error);
+  });
+
+// Route to create a new book
+app.post("/books", async (request, response) => {
+  try {
+    const { title, author, publishedYear } = request.body;
+
+    // Validate request body
+    if (!title || !author || !publishedYear) {
+      return response.status(400).send({ message: "Data is required: Title, Author, Published Year" });
+    }
+
+    // Create and save the new book
+    const newBook = { title, author, publishedYear };
+    const savedBook = await Book.create(newBook);
+
+    return response.status(201).send(savedBook);
+  } catch (error) {
+    console.log(error.message);
+    return response.status(500).send({ message: error.message });
+  }
+});
+
+// Start the server
 app.listen(PORT, () => {
   console.log(`App (Server) is listening to port ${PORT}`);
-});
-// The import statement is used to import the PORT constant from the config.js file. The PORT constant is then used in the app.listen() method to specify the port on which the server should listen. This allows the port number to be easily changed by updating the value in the config.js file.
-
-mongoose.connect(MongoDB_URI)
-.then(() => {
-  console.log('Connected to MongoDB');
-  app.get("/", (request, response) => {
-    console.log(request);
-    return response.status(234).send("Server Responding: Hello World!");
-  });
-  // The app.get() method is used to define a route for the root URL ("/") that sends a response of "Hello World!" when the route is accessed. This route will be accessible at the root URL of the server (e.g., http://localhost:5555/).
-  
-})
-.catch((error) => {
-  console.log('Error connecting to MongoDB:', error);
 });
