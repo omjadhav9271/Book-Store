@@ -4,6 +4,7 @@ import { PORT, MongoDB_URI } from './config.js'; // Importing configuration vari
 import mongoose from 'mongoose'; // Mongoose is an ODM (Object Data Modeling) library for MongoDB
 import { Book } from './models/bookModel.js'; // Importing the Book model to interact with the database
 import booksRoute from './routes/booksRoute.js'; // Importing the book routes
+import cors from 'cors'; // CORS (Cross-Origin Resource Sharing) is a mechanism that allows resources to be requested from another domain
 
 // Creating an instance of the Express application
 const app = express(); // This initializes the Express application
@@ -11,6 +12,14 @@ const app = express(); // This initializes the Express application
 // Middleware to parse JSON requests
 // Middleware functions are executed for every incoming request before it reaches the route handler
 app.use(express.json()); // This middleware parses incoming JSON data in the request body
+
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from the specified origin
+  methods: ['GET,POST,PUT,DELETE'], // Allow the specified methods
+  allowedHeaders: ['Content-Type'], // Allow the specified headers
+})); // Enable CORS for all requests
+
+
 
 // Mounting the book routes
 // All routes defined in the "booksRoute.js" file will be accessible under the "/books" endpoint
