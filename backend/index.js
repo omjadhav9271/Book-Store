@@ -139,6 +139,28 @@ app.put("/books/:id", async (request, response) => {
   }
 });
 
+app.delete("/books/:id", async (request, response) => {
+  try {
+    // Extract the book ID from the request parameters
+    const { id } = request.params;
+
+    // Find the book by ID and delete it
+    const deletedBook = await Book.findByIdAndDelete(id);
+
+    // Check if the book exists
+    if (!deletedBook) {
+      return response.status(404).send({ message: "Book not found" });
+    }
+
+    // Send a success response with a message indicating that the book has been deleted
+    return response.status(200).send({ message: "Book deleted successfully" });
+  } catch (error) {
+    console.log(error.message);
+    return response.status(500).send({ message: error.message });
+  }
+});
+
+
 // Start the server
 // This starts the Express server and listens for incoming requests on the specified port
 app.listen(PORT, () => {
