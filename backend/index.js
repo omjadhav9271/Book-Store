@@ -103,6 +103,42 @@ app.get("/books/:id", async (request, response) => {
   }
 });
 
+app.put("/books/:id", async (request, response) => {
+  try {
+    // Extract the book ID from the request parameters
+    const { id } = request.params;
+
+    // Extract the updated data from the request body
+    const { title, author, publishedYear } = request.body;
+
+    // Validate request body
+    if (!title || !author || !publishedYear) {
+      return response.status(400).send({ message: "Data is required: Title, Author, Published Year" });
+    }
+
+    // Find the book by ID and update it with the new data
+    const updatedBook = await Book.findByIdAndUpdate(
+      id, // Find the book by ID
+      { title, author, publishedYear }, // Update the book with the new data
+      { new: true } // Return the updated book (new: true)
+    );
+
+    // Check if the book exists
+    if (!updatedBook) {
+      return response.status(404).send({ message: "Book not found" });
+    }
+
+    // Send a success response with the updated book data and a success message
+    return response.status(200).json({
+      message: "Book updated successfully",
+      data: updatedBook
+    });
+  } catch (error) {
+    console.log(error.message);
+    return response.status(500).send({ message: error.message });
+  }
+});
+
 // Start the server
 // This starts the Express server and listens for incoming requests on the specified port
 app.listen(PORT, () => {
