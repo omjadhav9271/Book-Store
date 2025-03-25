@@ -76,7 +76,32 @@ app.get("/books", async (request, response) => {
     // Send a 500 Internal Server Error response with the error message
     return response.status(500).send({ message: error.message });
   }
-},);
+});
+
+app.get("/books/:id", async (request, response) => {
+  try {
+    // Extract the book ID from the request parameters
+    const { id } = request.params;
+
+    // Fetch the book with the specified ID from the database
+    // The Book model is used to query the database and retrieve the book document by its ID
+    const book = await Book.findById(id); // Correctly pass the ID directly
+
+    // Check if the book exists
+    if (!book) {
+      // If no book is found, send a 404 Not Found response with an error message
+      return response.status(404).send({ message: "Book not found" });
+    }
+
+    // Send a success response with the book data
+    return response.status(200).json(book);
+  } catch (error) {
+    // If an error occurs during the process, log the error message for debugging
+    console.log(error.message);
+    // Send a 500 Internal Server Error response with the error message
+    return response.status(500).send({ message: error.message });
+  }
+});
 
 // Start the server
 // This starts the Express server and listens for incoming requests on the specified port
