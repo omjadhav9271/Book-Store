@@ -59,6 +59,25 @@ app.post("/books", async (request, response) => {
   }
 });
 
+app.get("/books", async (request, response) => {
+  try {
+    // Fetch all books from the database
+    // The Book model is used to query the database and retrieve all book documents
+    const books = await Book.find({}); // Find all books in the database
+
+    // Send a success response with the list of books
+    return response.status(200).json({
+      count: books.length, // Include the count of books in the response
+      data: books // Include the list of books in the response
+    });
+  } catch (error) {
+    // If an error occurs during the process, log the error message for debugging
+    console.log(error.message);
+    // Send a 500 Internal Server Error response with the error message
+    return response.status(500).send({ message: error.message });
+  }
+},);
+
 // Start the server
 // This starts the Express server and listens for incoming requests on the specified port
 app.listen(PORT, () => {
