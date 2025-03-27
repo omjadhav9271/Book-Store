@@ -1,25 +1,21 @@
-import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import React from 'react';
+import Home from './pages/Home';
+import CreateBooks from './pages/CreateBooks';
+import EditBook from './pages/EditBook';
+import DeleteBook from './pages/DeleteBook';
+import ShowBook from './pages/ShowBook';
 
-export default function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
   return (
-    <div className="container text-center mt-5">
-      <h1 className="text-primary">Welcome to the Book Store</h1>
-      <p className="lead">This is a React app powered by Vite and styled with Bootstrap.</p>
-
-      <div className="mt-4">
-        <button className="btn btn-primary me-2" onClick={() => setCount((count) => count + 1)}>
-          Increment Count
-        </button>
-        <button className="btn btn-danger" onClick={() => setCount(0)}>
-          Reset Count
-        </button>
-      </div>
-
-      <h2 className="mt-4">Count: {count}</h2>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/books/create" element={<CreateBooks />} />
+      <Route path="/books/details/:id" element={<ShowBook />} />
+      <Route path="/books/edit/:id" element={<EditBook />} />
+      <Route path="/books/delete/:id" element={<DeleteBook />} />
+    </Routes>
   );
-}
+};
+
+export default App;

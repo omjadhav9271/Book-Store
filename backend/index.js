@@ -13,11 +13,13 @@ const app = express(); // This initializes the Express application
 // Middleware functions are executed for every incoming request before it reaches the route handler
 app.use(express.json()); // This middleware parses incoming JSON data in the request body
 
-app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from the specified origin
-  methods: ['GET,POST,PUT,DELETE'], // Allow the specified methods
-  allowedHeaders: ['Content-Type'], // Allow the specified headers
-})); // Enable CORS for all requests
+app.use(cors()); // Enable CORS for all requests
+
+// app.use(cors({
+//   origin: 'http://localhost:3000', // Allow requests from the specified origin
+//   methods: ['GET,POST,PUT,DELETE'], // Allow the specified methods
+//   allowedHeaders: ['Content-Type'], // Allow the specified headers
+// })); // Enable CORS for all requests
 
 
 
