@@ -45,8 +45,8 @@ const ShowBook = () => {
               <p className="card-text">{book.author}</p>
             </div>
             <div className="mb-3">
-              <h5 className="card-title text-muted">Publish Year</h5>
-              <p className="card-text">{book.publishYear}</p>
+              <h5 className="card-title text-muted">Published Year</h5>
+              <p className="card-text">{book.publishedYear}</p>
             </div>
             <div className="mb-3">
               <h5 className="card-title text-muted">Create Time</h5>
